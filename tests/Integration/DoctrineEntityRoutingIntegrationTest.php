@@ -4,7 +4,6 @@ namespace Tourze\DoctrineEntityRoutingBundle\Tests\Integration;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use PHPUnit\Framework\SkippedWithMessageException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
@@ -18,7 +17,6 @@ use Tourze\DoctrineEntityRoutingBundle\Tests\Integration\Entity\TestEntity;
  * 注意: 运行此测试需要在全局项目中安装以下依赖:
  * - doctrine/doctrine-bundle
  * - symfony/framework-bundle
- * - tourze/routing-auto-loader-bundle
  */
 class DoctrineEntityRoutingIntegrationTest extends KernelTestCase
 {
@@ -51,29 +49,6 @@ class DoctrineEntityRoutingIntegrationTest extends KernelTestCase
         $entity->setName('测试实体');
         $entityManager->persist($entity);
         $entityManager->flush();
-    }
-
-    /**
-     * 检查测试所需的依赖
-     *
-     * @throws SkippedWithMessageException 如果依赖缺失则抛出此异常
-     */
-    private function checkDependencies(): void
-    {
-        // 检查 doctrine/doctrine-bundle
-        if (!class_exists(DoctrineBundle::class)) {
-            $this->markTestSkipped('依赖缺失: doctrine/doctrine-bundle');
-        }
-
-        // 检查 symfony/framework-bundle
-        if (!class_exists(FrameworkBundle::class)) {
-            $this->markTestSkipped('依赖缺失: symfony/framework-bundle');
-        }
-
-        // 检查 tourze/routing-auto-loader-bundle
-        if (!class_exists(RoutingAutoLoaderBundle::class)) {
-            $this->markTestSkipped('依赖缺失: tourze/routing-auto-loader-bundle');
-        }
     }
 
     public function testServiceWiring(): void
