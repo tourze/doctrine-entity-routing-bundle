@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
 use Tourze\DoctrineEntityRoutingBundle\Controller\EntityMetadataController;
-use Tourze\DoctrineEntityRoutingBundle\Service\EntityRouteLoader;
+use Tourze\DoctrineEntityRoutingBundle\Service\AttributeControllerLoader;
 use Tourze\DoctrineEntityRoutingBundle\Tests\Integration\Entity\TestEntity;
 
 /**
@@ -27,16 +27,13 @@ class DoctrineEntityRoutingIntegrationTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        // 检查依赖
-        $this->checkDependencies();
-
         // 启动内核
         self::bootKernel();
         $container = static::getContainer();
 
         // 获取实体管理器
         $entityManager = $container->get('doctrine.orm.entity_manager');
-        assert($entityManager instanceof EntityManagerInterface);
+        $this->assertInstanceOf(EntityManagerInterface::class, $entityManager);
 
         // 创建/更新数据库模式
         $schemaTool = new SchemaTool($entityManager);
@@ -56,8 +53,8 @@ class DoctrineEntityRoutingIntegrationTest extends KernelTestCase
         $container = static::getContainer();
 
         // 测试能否获取 EntityRouteLoader 服务
-        $entityRouteLoader = $container->get(EntityRouteLoader::class);
-        $this->assertInstanceOf(EntityRouteLoader::class, $entityRouteLoader);
+        $entityRouteLoader = $container->get(AttributeControllerLoader::class);
+        $this->assertInstanceOf(AttributeControllerLoader::class, $entityRouteLoader);
 
         // 测试能否获取 EntityMetadataController 服务
         $entityMetadataController = $container->get(EntityMetadataController::class);
@@ -90,7 +87,7 @@ class DoctrineEntityRoutingIntegrationTest extends KernelTestCase
 
         // 在某些情况下，路由可能需要通过手动加载来测试
         if ($route === null) {
-            $entityRouteLoader = $container->get(EntityRouteLoader::class);
+            $entityRouteLoader = $container->get(AttributeControllerLoader::class);
             $routes = $entityRouteLoader->autoload();
             $route = $routes->get($routeName);
         }

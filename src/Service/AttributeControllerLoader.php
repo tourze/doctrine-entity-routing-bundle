@@ -11,7 +11,7 @@ use Tourze\DoctrineEntityRoutingBundle\Controller\EntityMetadataController;
 use Tourze\RoutingAutoLoaderBundle\Service\RoutingAutoLoaderInterface;
 
 #[AutoconfigureTag('routing.loader')]
-class EntityRouteLoader extends Loader implements RoutingAutoLoaderInterface
+class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInterface
 {
     private bool $isLoaded = false;
 

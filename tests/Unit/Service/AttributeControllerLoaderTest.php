@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RouteCollection;
-use Tourze\DoctrineEntityRoutingBundle\Service\EntityRouteLoader;
+use Tourze\DoctrineEntityRoutingBundle\Service\AttributeControllerLoader;
 
-class EntityRouteLoaderTest extends TestCase
+class AttributeControllerLoaderTest extends TestCase
 {
     private EntityManagerInterface|MockObject $entityManager;
     private ClassMetadataFactory|MockObject $metadataFactory;
@@ -51,7 +51,7 @@ class EntityRouteLoaderTest extends TestCase
             ->willReturn([$metadata1, $metadata2]);
 
         // 创建路由加载器实例
-        $loader = new EntityRouteLoader($this->entityManager);
+        $loader = new AttributeControllerLoader($this->entityManager);
 
         // 调用load方法
         $routes = $loader->load('test_resource', 'entity_route');
@@ -78,7 +78,7 @@ class EntityRouteLoaderTest extends TestCase
         unset($_ENV['ENTITY_METADATA_ROUTES']);
 
         // 创建路由加载器实例
-        $loader = new EntityRouteLoader($this->entityManager);
+        $loader = new AttributeControllerLoader($this->entityManager);
 
         // 调用load方法
         $routes = $loader->load('test_resource', 'entity_route');
@@ -91,7 +91,7 @@ class EntityRouteLoaderTest extends TestCase
     public function testSupports_withEntityRouteType(): void
     {
         // 创建路由加载器实例
-        $loader = new EntityRouteLoader($this->entityManager);
+        $loader = new AttributeControllerLoader($this->entityManager);
 
         // 验证支持entity_route类型
         $this->assertTrue($loader->supports('test_resource', 'entity_route'));
@@ -100,7 +100,7 @@ class EntityRouteLoaderTest extends TestCase
     public function testSupports_withOtherType(): void
     {
         // 创建路由加载器实例
-        $loader = new EntityRouteLoader($this->entityManager);
+        $loader = new AttributeControllerLoader($this->entityManager);
 
         // 验证不支持其他类型
         $this->assertFalse($loader->supports('test_resource', 'other_type'));
@@ -121,7 +121,7 @@ class EntityRouteLoaderTest extends TestCase
             ->willReturn([$metadata1, $metadata2]);
 
         // 创建路由加载器实例
-        $loader = new EntityRouteLoader($this->entityManager);
+        $loader = new AttributeControllerLoader($this->entityManager);
 
         // 调用autoload方法
         $routes = $loader->autoload();
@@ -146,7 +146,7 @@ class EntityRouteLoaderTest extends TestCase
             ->willReturn([$metadata]);
 
         // 创建路由加载器实例
-        $loader = new EntityRouteLoader($this->entityManager);
+        $loader = new AttributeControllerLoader($this->entityManager);
 
         // 第一次调用autoload方法
         $firstRoutes = $loader->autoload();
@@ -167,7 +167,7 @@ class EntityRouteLoaderTest extends TestCase
             ->willReturn([]);
 
         // 创建路由加载器实例
-        $loader = new EntityRouteLoader($this->entityManager);
+        $loader = new AttributeControllerLoader($this->entityManager);
 
         // 调用autoload方法
         $routes = $loader->autoload();
