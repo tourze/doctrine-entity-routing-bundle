@@ -3,6 +3,7 @@
 namespace Tourze\DoctrineEntityRoutingBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\AttributeRouteControllerLoader;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Routing\Route;
@@ -14,10 +15,12 @@ use Tourze\RoutingAutoLoaderBundle\Service\RoutingAutoLoaderInterface;
 class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInterface
 {
     private bool $isLoaded = false;
+    private AttributeRouteControllerLoader $controllerLoader;
 
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct();
+        $this->controllerLoader = new AttributeRouteControllerLoader();
     }
 
     public function load(mixed $resource, ?string $type = null): RouteCollection
@@ -36,11 +39,15 @@ class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInter
 
     public function autoload(): RouteCollection
     {
-        $routes = new RouteCollection();
+        $collection = new RouteCollection();
         if ($this->isLoaded) {
-            return $routes;
+            return $collection;
         }
 
+        // 注册控制器
+        $collection->addCollection($this->controllerLoader->load(EntityMetadataController::class));
+
+        // 添加动态路由
         $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
 
         foreach ($metadata as $meta) {
@@ -55,10 +62,10 @@ class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInter
                 ]
             );
 
-            $routes->add('entity_desc_' . $tableName, $route);
+            $collection->add('entity_desc_' . $tableName, $route);
         }
 
         $this->isLoaded = true;
-        return $routes;
+        return $collection;
     }
 }

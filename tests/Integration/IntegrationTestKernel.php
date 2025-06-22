@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Tourze\DoctrineEntityRoutingBundle\DoctrineEntityRoutingBundle;
 
 class IntegrationTestKernel extends Kernel
@@ -26,8 +25,8 @@ class IntegrationTestKernel extends Kernel
                 'test' => true,
                 'secret' => 'test',
                 'router' => [
-                    'resource' => 'kernel::loadRoutes',
-                    'type' => 'service',
+                    'resource' => __DIR__ . '/routes.yaml',
+                    'utf8' => true,
                 ],
             ]);
             
@@ -52,10 +51,5 @@ class IntegrationTestKernel extends Kernel
                 ],
             ]);
         });
-    }
-    
-    public function loadRoutes(RoutingConfigurator $routes): void
-    {
-        // 路由将由 EntityRouteLoader 动态加载
     }
 }
