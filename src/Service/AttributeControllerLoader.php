@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Tourze\DoctrineEntityRoutingBundle\Controller\EntityMetadataController;
 use Tourze\RoutingAutoLoaderBundle\Service\RoutingAutoLoaderInterface;
 
-#[AutoconfigureTag('routing.loader')]
+#[AutoconfigureTag(name: 'routing.loader')]
 class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInterface
 {
     private bool $isLoaded = false;

@@ -6,5 +6,23 @@ services:
 
   Tourze\DoctrineEntityRoutingBundle\Controller\:
     resource: '../../Controller/'
+    tags: ['controller.service_arguments']
+    
   Tourze\DoctrineEntityRoutingBundle\Service\:
     resource: '../../Service/'
+
+  # 明确定义服务以便测试可以验证它们的存在
+  tourze.doctrine_entity_routing.controller.entity_metadata:
+    class: Tourze\DoctrineEntityRoutingBundle\Controller\EntityMetadataController
+    public: true
+    tags: ['controller.service_arguments']
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@logger'
+
+  tourze.doctrine_entity_routing.attribute_controller_loader:
+    class: Tourze\DoctrineEntityRoutingBundle\Service\AttributeControllerLoader
+    arguments:
+      - '@doctrine.orm.entity_manager'
+    tags:
+      - { name: 'routing.loader' }

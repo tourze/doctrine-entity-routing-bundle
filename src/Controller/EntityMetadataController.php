@@ -27,9 +27,9 @@ class EntityMetadataController extends AbstractController
                         $fieldMapping = $meta->getFieldMapping($field);
                         $entityData[] = [
                             'field' => $field,
-                            'type' => $fieldMapping['type'],
-                            'length' => $fieldMapping['length'] ?? null,
-                            'nullable' => $fieldMapping['nullable'] ?? false,
+                            'type' => $fieldMapping->type,
+                            'length' => $fieldMapping->length ?? null,
+                            'nullable' => $fieldMapping->nullable ?? false,
                         ];
                     }
 
