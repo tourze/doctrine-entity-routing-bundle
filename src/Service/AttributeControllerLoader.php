@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineEntityRoutingBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +17,7 @@ use Tourze\RoutingAutoLoaderBundle\Service\RoutingAutoLoaderInterface;
 class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInterface
 {
     private bool $isLoaded = false;
+
     private AttributeRouteControllerLoader $controllerLoader;
 
     public function __construct(private readonly EntityManagerInterface $entityManager)
@@ -57,7 +60,7 @@ class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInter
             $route = new Route(
                 $routePath,
                 [
-                    '_controller' => EntityMetadataController::class . '::getEntityMetadata',
+                    '_controller' => EntityMetadataController::class,
                     'tableName' => $tableName,
                 ]
             );
@@ -66,6 +69,7 @@ class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInter
         }
 
         $this->isLoaded = true;
+
         return $collection;
     }
 }

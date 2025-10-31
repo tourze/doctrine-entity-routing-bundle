@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineEntityRoutingBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Attribute\Route;
 
-class EntityMetadataController extends AbstractController
+#[WithMonologChannel(channel: 'doctrine_entity_routing')]
+#[Autoconfigure(public: true)]
+final class EntityMetadataController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
@@ -15,7 +22,8 @@ class EntityMetadataController extends AbstractController
     ) {
     }
 
-    public function getEntityMetadata(string $tableName): JsonResponse
+    #[Route(path: '/entity/desc/{tableName}', name: 'entity_metadata_desc', methods: ['GET'])]
+    public function __invoke(string $tableName): JsonResponse
     {
         $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
         $entityData = [];

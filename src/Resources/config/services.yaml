@@ -1,28 +1,16 @@
 services:
-  # default configuration for services in *this* file
   _defaults:
-    autowire: true      # Automatically injects dependencies in your services.
-    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    autowire: true
+    autoconfigure: true
 
+  # Auto-register services in this bundle
   Tourze\DoctrineEntityRoutingBundle\Controller\:
     resource: '../../Controller/'
     tags: ['controller.service_arguments']
-    
+
   Tourze\DoctrineEntityRoutingBundle\Service\:
     resource: '../../Service/'
 
-  # 明确定义服务以便测试可以验证它们的存在
-  tourze.doctrine_entity_routing.controller.entity_metadata:
-    class: Tourze\DoctrineEntityRoutingBundle\Controller\EntityMetadataController
-    public: true
+  # Explicit definitions for testing
+  Tourze\DoctrineEntityRoutingBundle\Controller\EntityMetadataController:
     tags: ['controller.service_arguments']
-    arguments:
-      - '@doctrine.orm.entity_manager'
-      - '@logger'
-
-  tourze.doctrine_entity_routing.attribute_controller_loader:
-    class: Tourze\DoctrineEntityRoutingBundle\Service\AttributeControllerLoader
-    arguments:
-      - '@doctrine.orm.entity_manager'
-    tags:
-      - { name: 'routing.loader' }

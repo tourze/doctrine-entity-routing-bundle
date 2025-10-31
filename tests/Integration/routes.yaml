@@ -1,5 +1,0 @@
-# Test routes
-entity_metadata:
-  path: /entity-metadata/{tableName}
-  controller: Tourze\DoctrineEntityRoutingBundle\Controller\EntityMetadataController::getEntityMetadata
-  methods: GET
